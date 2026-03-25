@@ -145,6 +145,40 @@
   position: absolute;
 }
 
+/* Instant static placeholder while 3D decrypts/loads */
+.character-placeholder-wrapper {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1920px;
+  max-height: 1080px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.character-placeholder {
+  width: auto;
+  max-width: 420px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 30px 80px rgba(0, 0, 0, 0.5));
+  transition: opacity 0.35s ease-out, transform 0.35s ease-out;
+}
+
+.character-loaded .character-placeholder {
+  opacity: 0;
+  transform: translateY(20px) scale(0.98);
+}
+
+.character-loading .character-model canvas {
+  opacity: 0;
+}
+
 .character-loaded .character-rim {
   animation: backlight 3s forwards;
   animation-delay: 0.3s;
@@ -269,7 +303,7 @@ h2.landing-info-h2 {
   }
 
   .landing-intro {
-    top: 10%;
+    top: 18%;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;

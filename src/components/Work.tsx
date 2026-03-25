@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import "./styles/Work.css";
 import { MdArrowForward } from "react-icons/md";
 
@@ -29,6 +30,23 @@ const projects = [
 ];
 
 const Work = () => {
+  const trackContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const handleArrowClick = (direction: "left" | "right") => {
+    const container = trackContainerRef.current;
+    if (!container) return;
+
+    const firstSlide = container.querySelector(
+      ".carousel-slide"
+    ) as HTMLDivElement | null;
+
+    const slideWidth = firstSlide?.offsetWidth || container.clientWidth * 0.8;
+    const gap = 24; // matches CSS gap between slides
+    const offset = (slideWidth + gap) * (direction === "left" ? -1 : 1);
+
+    container.scrollBy({ left: offset, behavior: "smooth" });
+  };
+
   return (
     <div className="work-section" id="work">
       <div className="work-container section-container">
@@ -37,6 +55,22 @@ const Work = () => {
         </h2>
 
         <div className="carousel-wrapper">
+          <button
+            type="button"
+            className="carousel-arrow carousel-arrow-left"
+            aria-label="Previous project"
+            onClick={() => handleArrowClick("left")}
+          >
+            <MdArrowForward />
+          </button>
+          <button
+            type="button"
+            className="carousel-arrow carousel-arrow-right"
+            aria-label="Next project"
+            onClick={() => handleArrowClick("right")}
+          >
+            <MdArrowForward />
+          </button>
           <div
             className="carousel-scroll-hint"
             aria-hidden="true"
@@ -45,7 +79,7 @@ const Work = () => {
             <span>Scroll</span>
             <MdArrowForward />
           </div>
-          <div className="carousel-track-container">
+          <div className="carousel-track-container" ref={trackContainerRef}>
             <div className="carousel-track">
               {projects.map((project, index) => (
                 <div className="carousel-slide" key={index}>

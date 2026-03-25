@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import setCharacter from "./utils/character";
 import setLighting from "./utils/lighting";
@@ -15,6 +15,7 @@ const Scene = () => {
   const canvasDiv = useRef<HTMLDivElement | null>(null);
   const hoverDivRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef(new THREE.Scene());
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -33,11 +34,12 @@ const Scene = () => {
         alpha: true,
         // turn off expensive MSAA, rely on post AA from the display
         antialias: false,
+        powerPreference: "high-performance",
       });
       renderer.setSize(container.width, container.height);
       // cap pixel ratio to avoid overworking the GPU on high-DPI screens;
       // use a lower cap on small screens to improve performance.
-      const pixelRatioCap = window.innerWidth < 900 ? 1.1 : 1.4;
+      const pixelRatioCap = window.innerWidth < 900 ? 1 : 1.25;
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, pixelRatioCap));
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1;
@@ -79,6 +81,7 @@ const Scene = () => {
           if (!mounted) return;
           light.turnOnLights();
           animations.startIntro();
+          setIsLoaded(true);
         }
       });
 
@@ -165,7 +168,19 @@ const Scene = () => {
 
   return (
     <>
-      <div className="character-container">
+      <div
+        className={`character-container ${
+          isLoaded ? "character-loaded" : "character-loading"
+        }`}
+      >
+        {/* Instant static placeholder while the 3D model decrypts/loads */}
+        <div className="character-placeholder-wrapper">
+          <img
+            src="/images/preview.png"
+            alt="John Praneeth 3D avatar"
+            className="character-placeholder"
+          />
+        </div>
         <div className="character-model" ref={canvasDiv}>
           <div className="character-rim"></div>
           <div className="character-hover" ref={hoverDivRef}></div>
