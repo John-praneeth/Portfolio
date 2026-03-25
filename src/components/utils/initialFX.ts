@@ -145,7 +145,7 @@ export function initialFX() {
 }
 
 function LoopText(Text1: SplitGroup, Text2: SplitGroup) {
-  var tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
+  const tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
   const delay = 4;
   const delay2 = delay * 2 + 1;
 

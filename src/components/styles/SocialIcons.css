@@ -126,6 +126,16 @@ div.resume-button span {
   background: #0a0e17;
 }
 
+.resume-image {
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  background: #0a0e17;
+}
+
 .resume-close {
   position: absolute;
   top: 10px;
