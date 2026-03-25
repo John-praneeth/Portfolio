@@ -8,6 +8,11 @@ const setCharacter = (
   scene: THREE.Scene,
   camera: THREE.PerspectiveCamera
 ) => {
+  // Mark renderer and scene as used so TypeScript doesn't flag them,
+  // even though we currently don't need them after removing compileAsync.
+  void renderer;
+  void scene;
+
   const loader = new GLTFLoader();
   const dracoLoader = new DRACOLoader();
   dracoLoader.setDecoderPath("/draco/");
@@ -23,12 +28,10 @@ const setCharacter = (
           );
           const blobUrl = URL.createObjectURL(new Blob([encryptedBlob]));
 
-          let character: THREE.Object3D;
           loader.load(
             blobUrl,
             async (gltf) => {
-              character = gltf.scene;
-              await renderer.compileAsync(character, camera, scene);
+              const character = gltf.scene;
               character.traverse((child) => {
                 if (!(child instanceof THREE.Mesh)) return;
                 const mesh = child as THREE.Mesh;

@@ -1,11 +1,14 @@
 import { lazy, Suspense } from "react";
 import "./App.css";
 
-const CharacterModel = lazy(() => import("./components/Character"));
-const MainContainer = lazy(() => import("./components/MainContainer"));
+import CharacterModel from "./components/Character";
 import { LoadingProvider } from "./context/LoadingProvider";
+import { Analytics } from "@vercel/analytics/react";
+
+const MainContainer = lazy(() => import("./components/MainContainer"));
 
 const App = () => {
+
   return (
     <>
       <LoadingProvider>
@@ -16,6 +19,7 @@ const App = () => {
             </Suspense>
           </MainContainer>
         </Suspense>
+        <Analytics />
       </LoadingProvider>
     </>
   );

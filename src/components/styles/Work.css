@@ -179,11 +179,15 @@
 }
 
 .carousel-arrow-left {
-  left: -70px;
+  left: 60px;
 }
 
 .carousel-arrow-right {
   right: -70px;
+}
+
+.carousel-arrow-left svg {
+  transform: rotate(180deg);
 }
 
 /* ── Dot Indicators ── */
@@ -214,6 +218,22 @@
   background: var(--accentColor);
   border-color: var(--accentColor);
   box-shadow: 0 0 8px rgba(94, 234, 212, 0.4);
+}
+
+@media (max-width: 900px) {
+  .carousel-arrow {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  .carousel-arrow-left {
+    left: 8px;
+  }
+
+  .carousel-arrow-right {
+    right: 8px;
+  }
 }
 
 /* ── Work Image (reused) ── */

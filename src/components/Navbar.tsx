@@ -25,13 +25,16 @@ const Navbar = () => {
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    const lenis = new Lenis({
+    const lenisOptions: any = {
       // shorter duration = less "drag" feeling
       duration: prefersReducedMotion ? 0.06 : 0.09,
       smoothWheel: !prefersReducedMotion,
-      wheelMultiplier: prefersReducedMotion ? 1 : 1.1,
-      touchMultiplier: prefersReducedMotion ? 1 : 1.1,
-    });
+      wheelMultiplier: prefersReducedMotion ? 1 : 1.05,
+      touchMultiplier: prefersReducedMotion ? 1 : 1.02,
+      autoRaf: false,
+    };
+
+    const lenis = new Lenis(lenisOptions);
 
     let frameId: number;
     const raf = (time: number) => {
