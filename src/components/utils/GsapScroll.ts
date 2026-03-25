@@ -1,41 +1,57 @@
 import * as THREE from "three";
 import gsap from "gsap";
 
+let charInterval: number;
+
 export function setCharTimeline(
   character: THREE.Object3D<THREE.Object3DEventMap> | null,
   camera: THREE.PerspectiveCamera
 ) {
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
   let intensity: number = 0;
-  setInterval(() => {
-    intensity = Math.random();
-  }, 200);
-  const tl1 = gsap.timeline({
-    scrollTrigger: {
-      trigger: ".landing-section",
-      start: "top top",
-      end: "bottom top",
-      scrub: true,
-      invalidateOnRefresh: true,
-    },
-  });
-  const tl2 = gsap.timeline({
-    scrollTrigger: {
-      trigger: ".about-section",
-      start: "center 55%",
-      end: "bottom top",
-      scrub: true,
-      invalidateOnRefresh: true,
-    },
-  });
-  const tl3 = gsap.timeline({
-    scrollTrigger: {
-      trigger: ".whatIDO",
-      start: "top top",
-      end: "bottom top",
-      scrub: true,
-      invalidateOnRefresh: true,
-    },
-  });
+  if (charInterval) clearInterval(charInterval);
+  if (!prefersReducedMotion) {
+    charInterval = setInterval(() => {
+      intensity = Math.random();
+    }, 200) as unknown as number;
+  }
+
+  const tl1 = !prefersReducedMotion
+    ? gsap.timeline({
+        scrollTrigger: {
+          trigger: ".landing-section",
+          start: "top top",
+          end: "bottom top",
+          scrub: 0.7,
+          invalidateOnRefresh: true,
+        },
+      })
+    : null;
+  const tl2 = !prefersReducedMotion
+    ? gsap.timeline({
+        scrollTrigger: {
+          trigger: ".about-section",
+          start: "center 55%",
+          end: "bottom top",
+          scrub: 0.7,
+          invalidateOnRefresh: true,
+        },
+      })
+    : null;
+  const tl3 = !prefersReducedMotion
+    ? gsap.timeline({
+        scrollTrigger: {
+          trigger: ".whatIDO",
+          start: "top top",
+          end: "bottom top",
+          scrub: 0.7,
+          invalidateOnRefresh: true,
+        },
+      })
+    : null;
   let screenLight: any, monitor: any;
   character?.children.forEach((object: any) => {
     if (object.name === "Plane004") {
@@ -50,19 +66,23 @@ export function setCharTimeline(
     }
     if (object.name === "screenlight") {
       object.material.transparent = true;
-      object.material.opacity = 0;
+      object.material.opacity = prefersReducedMotion ? 1 : 0;
       object.material.emissive.set("#B0F5EA");
-      gsap.timeline({ repeat: -1, repeatRefresh: true }).to(object.material, {
-        emissiveIntensity: () => intensity * 8,
-        duration: () => Math.random() * 0.6,
-        delay: () => Math.random() * 0.1,
-      });
+      if (!prefersReducedMotion) {
+        gsap
+          .timeline({ repeat: -1, repeatRefresh: true })
+          .to(object.material, {
+            emissiveIntensity: () => intensity * 8,
+            duration: () => Math.random() * 0.6,
+            delay: () => Math.random() * 0.1,
+          });
+      }
       screenLight = object;
     }
   });
   let neckBone = character?.getObjectByName("spine005");
   if (window.innerWidth > 1024) {
-    if (character) {
+    if (character && !prefersReducedMotion && tl1 && tl2 && tl3) {
       tl1
         .fromTo(character.rotation, { y: 0 }, { y: 0.7, duration: 1 }, 0)
         .to(camera.position, { z: 22 }, 0)
@@ -86,9 +106,9 @@ export function setCharTimeline(
           0
         )
         .to(character.rotation, { y: 0.92, x: 0.12, delay: 3, duration: 3 }, 0)
-        .to(neckBone!.rotation, { x: 0.6, delay: 2, duration: 3 }, 0)
-        .to(monitor.material, { opacity: 1, duration: 0.8, delay: 3.2 }, 0)
-        .to(screenLight.material, { opacity: 1, duration: 0.8, delay: 4.5 }, 0)
+        .to(neckBone?.rotation || {}, { x: 0.6, delay: 2, duration: 3 }, 0)
+        .to(monitor?.material || {}, { opacity: 1, duration: 0.8, delay: 3.2 }, 0)
+        .to(screenLight?.material || {}, { opacity: 1, duration: 0.8, delay: 4.5 }, 0)
         .fromTo(
           ".what-box-in",
           { display: "none" },
@@ -96,7 +116,7 @@ export function setCharTimeline(
           0
         )
         .fromTo(
-          monitor.position,
+          monitor?.position || {},
           { y: -10, z: 2 },
           { y: 0, z: 0, delay: 1.5, duration: 3 },
           0
@@ -119,7 +139,7 @@ export function setCharTimeline(
         .to(character.rotation, { x: -0.04, duration: 2, delay: 1 }, 0);
     }
   } else {
-    if (character) {
+    if (character && !prefersReducedMotion) {
       const tM2 = gsap.timeline({
         scrollTrigger: {
           trigger: ".what-box-in",
@@ -133,12 +153,23 @@ export function setCharTimeline(
 }
 
 export function setAllTimeline() {
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  if (prefersReducedMotion) {
+    gsap.set(".career-timeline", { maxHeight: "100%", opacity: 1 });
+    gsap.set(".career-info-box", { opacity: 1 });
+    gsap.set(".career-dot", { animationIterationCount: "1" });
+    return;
+  }
+
   const careerTimeline = gsap.timeline({
     scrollTrigger: {
       trigger: ".career-section",
       start: "top 30%",
       end: "100% center",
-      scrub: true,
+      scrub: 0.7,
       invalidateOnRefresh: true,
     },
   });

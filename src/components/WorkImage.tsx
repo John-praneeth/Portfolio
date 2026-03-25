@@ -36,8 +36,20 @@ const WorkImage = (props: Props) => {
             <MdArrowOutward />
           </div>
         )}
-        <img src={props.image} alt={props.alt} />
-        {isVideo && <video src={video} autoPlay muted playsInline loop></video>}
+        <img
+          src={props.image}
+          alt={props.alt || "Project preview image"}
+        />
+        {isVideo && (
+          <video
+            src={video}
+            autoPlay
+            muted
+            playsInline
+            loop
+            aria-hidden="true"
+          ></video>
+        )}
       </a>
     </div>
   );

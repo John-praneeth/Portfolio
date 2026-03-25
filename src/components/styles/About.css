@@ -27,7 +27,9 @@
   font-size: 33px;
   font-weight: 600;
   line-height: 36px;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+  color: #f9fafb;
+  text-shadow: 0 0 22px rgba(0, 0, 0, 0.85);
 }
 
 @media only screen and (min-width: 600px) {
@@ -61,6 +63,7 @@
   .about-me p {
     font-size: 1.9vw;
     line-height: 2.3vw;
+    letter-spacing: 0.04em;
   }
 }
 @media only screen and (min-width: 1950px) {

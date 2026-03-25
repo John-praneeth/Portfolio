@@ -27,12 +27,11 @@ const WhatIDo = () => {
   return (
     <div className="whatIDO">
       <div className="what-box">
-        <h2 className="title">
-          W<span className="hat-h2">HAT</span>
-          <div>
-            I<span className="do-h2"> DO</span>
-          </div>
-        </h2>
+        <div className="what-heading">
+          <h2 className="what-heading-title">
+            WHAT I DO
+          </h2>
+        </div>
       </div>
       <div className="what-box">
         <div className="what-box-in">
@@ -87,22 +86,22 @@ const WhatIDo = () => {
             <div className="what-corner"></div>
 
             <div className="what-content-in">
-              <h3>FRONTEND</h3>
-              <h4>Building Interactive UIs</h4>
+              <h3>AI / ML</h3>
+              <h4>Building Intelligent Systems</h4>
               <p>
-                Crafting performant, responsive interfaces with modern frameworks.
-                From SPAs to micro-frontends, I deliver pixel-perfect experiences.
+                Crafting ML pipelines, NLP models, and AI-powered applications.
+                From hackathon prototypes to production-ready intelligent tools.
               </p>
-              <h5>Skillset & tools</h5>
+              <h5>Skillset &amp; tools</h5>
               <div className="what-content-flex">
-                <div className="what-tags">React.js</div>
-                <div className="what-tags">Angular</div>
-                <div className="what-tags">Next.js</div>
-                <div className="what-tags">TypeScript</div>
-                <div className="what-tags">JavaScript</div>
-                <div className="what-tags">Material UI</div>
-                <div className="what-tags">HTML5</div>
-                <div className="what-tags">CSS3</div>
+                <div className="what-tags">PyTorch</div>
+                <div className="what-tags">TensorFlow</div>
+                <div className="what-tags">Scikit-learn</div>
+                <div className="what-tags">Langchain</div>
+                <div className="what-tags">NumPy</div>
+                <div className="what-tags">Pandas</div>
+                <div className="what-tags">Streamlit</div>
+                <div className="what-tags">NLP</div>
               </div>
               <div className="what-arrow"></div>
             </div>
@@ -126,22 +125,22 @@ const WhatIDo = () => {
             </div>
             <div className="what-corner"></div>
             <div className="what-content-in">
-              <h3>BACKEND</h3>
-              <h4>Scalable Server Architecture</h4>
+              <h3>WEB DEV</h3>
+              <h4>Full-Stack Development</h4>
               <p>
-                Designing robust APIs and microservices. From CMS platforms to
-                complex business logic, I build backends that scale.
+                Designing and building responsive web apps end-to-end. From
+                interactive UIs to REST APIs, databases, and cloud deployment.
               </p>
-              <h5>Skillset & tools</h5>
+              <h5>Skillset &amp; tools</h5>
               <div className="what-content-flex">
-                <div className="what-tags">Node.js</div>
-                <div className="what-tags">NestJS</div>
+                <div className="what-tags">React</div>
+                <div className="what-tags">Next.js</div>
+                <div className="what-tags">Flutter</div>
                 <div className="what-tags">Express.js</div>
+                <div className="what-tags">Flask</div>
                 <div className="what-tags">MongoDB</div>
                 <div className="what-tags">PostgreSQL</div>
-                <div className="what-tags">REST APIs</div>
-                <div className="what-tags">Microservices</div>
-                <div className="what-tags">Python</div>
+                <div className="what-tags">Firebase</div>
               </div>
               <div className="what-arrow"></div>
             </div>

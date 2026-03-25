@@ -10,17 +10,23 @@ const Contact = () => {
           <div className="contact-box">
             <h4>Email</h4>
             <p>
-              <a href="mailto:rajeshchittyal21@gmail.com" data-cursor="disable">
-                rajeshchittyal21@gmail.com
+              <a href="mailto:johnpraneeth3030@gmail.com" data-cursor="disable">
+                johnpraneeth3030@gmail.com
+              </a>
+            </p>
+            <h4>Phone</h4>
+            <p>
+              <a href="tel:+919493030092" data-cursor="disable">
+                +91 9493030092
               </a>
             </p>
             <h4>Education</h4>
-            <p>BSc in Computer Science</p>
+            <p>B.Tech – Andhra University</p>
           </div>
           <div className="contact-box">
             <h4>Social</h4>
             <a
-              href="https://github.com/raxx21"
+              href="https://github.com/John-praneeth"
               target="_blank"
               data-cursor="disable"
               className="contact-social"
@@ -28,7 +34,7 @@ const Contact = () => {
               Github <MdArrowOutward />
             </a>
             <a
-              href="https://www.linkedin.com/in/rajesh-chityal-2a70141b3"
+              href="https://www.linkedin.com/in/john-praneeth/"
               target="_blank"
               data-cursor="disable"
               className="contact-social"
@@ -36,15 +42,14 @@ const Contact = () => {
               Linkedin <MdArrowOutward />
             </a>
             <a
-              href="https://x.com/raxx21_official"
-              target="_blank"
+              href="mailto:johnpraneeth@outlook.com"
               data-cursor="disable"
               className="contact-social"
             >
-              Twitter <MdArrowOutward />
+              Outlook <MdArrowOutward />
             </a>
             <a
-              href="https://www.instagram.com/therajeshchityal"
+              href="https://www.instagram.com/john__praneeth/"
               target="_blank"
               data-cursor="disable"
               className="contact-social"
@@ -54,10 +59,10 @@ const Contact = () => {
           </div>
           <div className="contact-box">
             <h2>
-              Designed and Developed <br /> by <span>Rajesh Chityal</span>
+              Designed and Developed <br /> by <span>John Praneeth</span>
             </h2>
             <h5>
-              <MdCopyright /> 2025
+              <MdCopyright /> 2026
             </h5>
           </div>
         </div>

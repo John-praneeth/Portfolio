@@ -1,0 +1,152 @@
+.techstack {
+  position: relative;
+  padding: 4.25rem 0 3.25rem;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
+.techstack-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.techstack-inner {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2.6rem;
+}
+
+.techstack-header {
+  text-align: center;
+}
+
+.techstack-heading {
+  font-size: 2.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 0.9rem;
+}
+
+.techstack-subtitle {
+  font-size: 1.05rem;
+  max-width: 680px;
+  margin: 0 auto;
+  color: rgba(226, 232, 240, 0.8);
+}
+
+.techstack-shell {
+  box-sizing: border-box;
+  border-radius: 1.8rem;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(148, 163, 184, 0.16), transparent 55%),
+    radial-gradient(circle at 100% 0%, rgba(94, 234, 212, 0.18), transparent 60%),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(5, 8, 16, 0.98));
+  border: 1px solid rgba(148, 163, 184, 0.32);
+  box-shadow: 0 20px 55px rgba(5, 8, 16, 0.95);
+  backdrop-filter: blur(20px);
+  padding: 2.2rem 2rem 2rem;
+  width: 100%;
+  min-width: 0;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.9rem;
+}
+
+.techstack-column-title {
+  font-size: 0.9rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(226, 232, 240, 0.9);
+  margin-bottom: 0.8rem;
+}
+
+.techstack-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.techstack-pill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.7rem 1.15rem;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid transparent;
+  transition: transform 0.22s ease, box-shadow 0.22s ease,
+    border-color 0.22s ease, background 0.22s ease;
+}
+
+.techstack-pill-name {
+  font-size: 1rem;
+  color: #e5e7eb;
+}
+
+.techstack-pill-label {
+  font-size: 0.85rem;
+  color: rgba(148, 163, 184, 0.9);
+}
+
+.techstack-pill:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56, 189, 248, 0.9);
+  background: rgba(15, 23, 42, 0.98);
+  box-shadow: 0 14px 40px rgba(8, 47, 73, 0.9);
+}
+
+@media (min-width: 900px) {
+  .techstack {
+    padding-left: 80px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .techstack {
+    padding: 3.4rem 6vw 2.5rem;
+  }
+
+  .techstack-heading {
+    font-size: 2.1rem;
+  }
+
+  .techstack-shell {
+    padding: 2rem 1.6rem 1.8rem;
+    gap: 1.6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .techstack {
+    padding: 3rem 5vw 3.4rem;
+  }
+
+  .techstack-heading {
+    font-size: 1.8rem;
+  }
+
+  .techstack-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .techstack-shell {
+    padding: 1.6rem 1.2rem 1.4rem;
+    gap: 1.2rem;
+  }
+
+  .techstack-pill {
+    padding: 0.6rem 0.9rem;
+  }
+}

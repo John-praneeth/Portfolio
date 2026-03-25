@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import setCharacter from "./utils/character";
 import setLighting from "./utils/lighting";
-import { useLoading } from "../../context/LoadingProvider";
 import handleResize from "./utils/resizeUtils";
 import {
   handleMouseMove,
@@ -11,17 +10,20 @@ import {
   handleTouchMove,
 } from "./utils/mouseUtils";
 import setAnimations from "./utils/animationUtils";
-import { setProgress } from "../Loading";
 
 const Scene = () => {
   const canvasDiv = useRef<HTMLDivElement | null>(null);
   const hoverDivRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef(new THREE.Scene());
-  const { setLoading } = useLoading();
 
-  const [character, setChar] = useState<THREE.Object3D | null>(null);
   useEffect(() => {
+    let mounted = true;
+
     if (canvasDiv.current) {
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
       let rect = canvasDiv.current.getBoundingClientRect();
       let container = { width: rect.width, height: rect.height };
       const aspect = container.width / container.height;
@@ -29,10 +31,14 @@ const Scene = () => {
 
       const renderer = new THREE.WebGLRenderer({
         alpha: true,
-        antialias: true,
+        // turn off expensive MSAA, rely on post AA from the display
+        antialias: false,
       });
       renderer.setSize(container.width, container.height);
-      renderer.setPixelRatio(window.devicePixelRatio);
+      // cap pixel ratio to avoid overworking the GPU on high-DPI screens;
+      // use a lower cap on small screens to improve performance.
+      const pixelRatioCap = window.innerWidth < 900 ? 1.1 : 1.4;
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, pixelRatioCap));
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1;
       canvasDiv.current.appendChild(renderer.domElement);
@@ -50,28 +56,27 @@ const Scene = () => {
       const clock = new THREE.Clock();
 
       const light = setLighting(scene);
-      let progress = setProgress((value) => setLoading(value));
       const { loadCharacter } = setCharacter(renderer, scene, camera);
 
+      const onResize = () => {
+        handleResize(renderer, camera, canvasDiv);
+      };
+      window.addEventListener("resize", onResize);
+
       loadCharacter().then((gltf) => {
+        if (!mounted) return;
+
         if (gltf) {
           const animations = setAnimations(gltf);
           hoverDivRef.current && animations.hover(gltf, hoverDivRef.current);
           mixer = animations.mixer;
           let character = gltf.scene;
-          setChar(character);
           scene.add(character);
           headBone = character.getObjectByName("spine006") || null;
           screenLight = character.getObjectByName("screenlight") || null;
-          progress.loaded().then(() => {
-            setTimeout(() => {
-              light.turnOnLights();
-              animations.startIntro();
-            }, 2500);
-          });
-          window.addEventListener("resize", () =>
-            handleResize(renderer, camera, canvasDiv, character)
-          );
+          if (!mounted) return;
+          light.turnOnLights();
+          animations.startIntro();
         }
       });
 
@@ -98,17 +103,27 @@ const Scene = () => {
         });
       };
 
-      document.addEventListener("mousemove", (event) => {
-        onMouseMove(event);
-      });
+      document.addEventListener("mousemove", onMouseMove);
       const landingDiv = document.getElementById("landingDiv");
       if (landingDiv) {
         landingDiv.addEventListener("touchstart", onTouchStart);
         landingDiv.addEventListener("touchend", onTouchEnd);
       }
+      let frameId: number;
+      let isDocumentVisible = !document.hidden;
+
+      const onVisibilityChange = () => {
+        isDocumentVisible = !document.hidden;
+      };
+
+      document.addEventListener("visibilitychange", onVisibilityChange);
       const animate = () => {
-        requestAnimationFrame(animate);
-        if (headBone) {
+        frameId = requestAnimationFrame(animate);
+        if (!mounted || !isDocumentVisible) {
+          return;
+        }
+
+        if (!prefersReducedMotion && headBone) {
           handleHeadRotation(
             headBone,
             mouse.x,
@@ -127,17 +142,18 @@ const Scene = () => {
       };
       animate();
       return () => {
+        mounted = false;
+        cancelAnimationFrame(frameId);
         clearTimeout(debounce);
         scene.clear();
         renderer.dispose();
-        window.removeEventListener("resize", () =>
-          handleResize(renderer, camera, canvasDiv, character!)
-        );
+        window.removeEventListener("resize", onResize);
+        document.removeEventListener("visibilitychange", onVisibilityChange);
         if (canvasDiv.current) {
           canvasDiv.current.removeChild(renderer.domElement);
         }
+        document.removeEventListener("mousemove", onMouseMove);
         if (landingDiv) {
-          document.removeEventListener("mousemove", onMouseMove);
           landingDiv.removeEventListener("touchstart", onTouchStart);
           landingDiv.removeEventListener("touchend", onTouchEnd);
         }

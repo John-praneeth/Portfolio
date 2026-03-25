@@ -6,7 +6,6 @@
   font-optical-sizing: auto;
   font-style: normal;
   line-height: 1.5;
-  scroll-behavior: smooth;
   color-scheme: light dark;
   color: #eae5ec;
   background-color: var(--backgroundColor);
@@ -34,7 +33,7 @@ h6 {
 }
 
 body {
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 a {
@@ -70,19 +69,26 @@ body {
   flex-grow: 1;
   --cWidth: calc(100% - 30px);
   --cMaxWidth: 1920px;
-  max-width: 100vw;
+  max-width: 100%;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .main-body {
-  max-width: 100vw;
+  max-width: 100%;
   overflow-x: hidden;
 }
 
 .container-main {
   width: 100%;
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
   position: relative;
+}
+
+#smooth-wrapper,
+#smooth-content {
+  width: 100%;
 }
 
 .container1 {
@@ -103,35 +109,8 @@ body {
   flex-wrap: nowrap;
 }
 
-.techstack {
-  width: 100%;
-  position: relative;
-  overflow: clip;
-  height: var(--vh);
-  margin: auto;
-  margin-top: 50px;
-  margin-bottom: -100px;
-}
-
-.techstack h2 {
-  font-size: 80px;
-  text-align: center;
-  position: absolute;
-  width: 100%;
-  top: 120px;
-  left: 0;
-  font-weight: 400;
-  text-transform: uppercase;
-}
-
 @media screen and (min-width: 768px) {
   body {
     --cWidth: 94%;
-  }
-}
-
-@media screen and (max-width: 900px) {
-  .techstack h2 {
-    font-size: 40px;
   }
 }

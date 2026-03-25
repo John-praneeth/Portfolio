@@ -1,10 +1,51 @@
-import { SplitText } from "gsap-trial/SplitText";
 import gsap from "gsap";
-import { smoother } from "../Navbar";
+
+interface SplitGroup {
+  chars: HTMLElement[];
+}
+
+function splitToChars(targets: string | string[]): SplitGroup {
+  const selectors = Array.isArray(targets) ? targets : [targets];
+  const chars: HTMLElement[] = [];
+
+  selectors.forEach((selector) => {
+    const elements = document.querySelectorAll<HTMLElement>(selector);
+    elements.forEach((el) => {
+      const originalText =
+        el.dataset.originalText !== undefined
+          ? el.dataset.originalText
+          : el.textContent || "";
+      el.dataset.originalText = originalText;
+      el.textContent = "";
+
+      for (const ch of originalText) {
+        if (ch === " ") {
+          el.appendChild(document.createTextNode(" "));
+          continue;
+        }
+        if (ch === "\n" || ch === "\r") {
+          el.appendChild(document.createElement("br"));
+          continue;
+        }
+        const span = document.createElement("span");
+        span.textContent = ch;
+        span.style.display = "inline-block";
+        span.classList.add("split-char");
+        el.appendChild(span);
+        chars.push(span);
+      }
+    });
+  });
+
+  return { chars };
+}
 
 export function initialFX() {
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
   document.body.style.overflowY = "auto";
-  smoother.paused(false);
   document.getElementsByTagName("main")[0].classList.add("main-active");
   gsap.to("body", {
     backgroundColor: "#0a0e17",
@@ -12,13 +53,38 @@ export function initialFX() {
     delay: 1,
   });
 
-  var landingText = new SplitText(
-    [".landing-info h3", ".landing-intro h2", ".landing-intro h1"],
-    {
-      type: "chars,lines",
-      linesClass: "split-line",
-    }
-  );
+  // For users who prefer reduced motion, skip the complex
+  // staggered character-by-character animations and looping text.
+  if (prefersReducedMotion) {
+    gsap.set(
+      [
+        ".landing-info h3",
+        ".landing-intro h2",
+        ".landing-h2-info",
+        ".landing-info-h2",
+        ".landing-h2-info-1",
+        ".landing-h2-1",
+        ".landing-h2-2",
+      ],
+      { opacity: 1, y: 0, clearProps: "filter" }
+    );
+    gsap.fromTo(
+      [".header", ".icons-section", ".nav-fade"],
+      { opacity: 0 },
+      {
+        opacity: 1,
+        duration: 0.6,
+        ease: "power1.out",
+        delay: 0.1,
+      }
+    );
+    return;
+  }
+
+  const landingText = splitToChars([
+    ".landing-info h3",
+    ".landing-intro h2",
+  ]);
   gsap.fromTo(
     landingText.chars,
     { opacity: 0, y: 80, filter: "blur(5px)" },
@@ -33,9 +99,7 @@ export function initialFX() {
     }
   );
 
-  let TextProps = { type: "chars,lines", linesClass: "split-h2" };
-
-  var landingText2 = new SplitText(".landing-h2-info", TextProps);
+  const landingText2 = splitToChars(".landing-h2-info");
   gsap.fromTo(
     landingText2.chars,
     { opacity: 0, y: 80, filter: "blur(5px)" },
@@ -72,15 +136,15 @@ export function initialFX() {
     }
   );
 
-  var landingText3 = new SplitText(".landing-h2-info-1", TextProps);
-  var landingText4 = new SplitText(".landing-h2-1", TextProps);
-  var landingText5 = new SplitText(".landing-h2-2", TextProps);
+  const landingText3 = splitToChars(".landing-h2-info-1");
+  const landingText4 = splitToChars(".landing-h2-1");
+  const landingText5 = splitToChars(".landing-h2-2");
 
   LoopText(landingText2, landingText3);
   LoopText(landingText4, landingText5);
 }
 
-function LoopText(Text1: SplitText, Text2: SplitText) {
+function LoopText(Text1: SplitGroup, Text2: SplitGroup) {
   var tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
   const delay = 4;
   const delay2 = delay * 2 + 1;

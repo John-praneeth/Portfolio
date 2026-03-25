@@ -8,6 +8,7 @@ import Navbar from "./Navbar";
 import SocialIcons from "./SocialIcons";
 import WhatIDo from "./WhatIDo";
 import Work from "./Work";
+import Licenses from "./Licenses";
 import setSplitText from "./utils/splitText";
 
 const TechStack = lazy(() => import("./TechStack"));
@@ -37,19 +38,18 @@ const MainContainer = ({ children }: PropsWithChildren) => {
       {isDesktopView && children}
       <div id="smooth-wrapper">
         <div id="smooth-content">
-          <div className="container-main">
-            <Landing>{!isDesktopView && children}</Landing>
-            <About />
-            <WhatIDo />
-            <Career />
-            <Work />
-            {isDesktopView && (
-              <Suspense fallback={<div>Loading....</div>}>
-                <TechStack />
-              </Suspense>
-            )}
-            <Contact />
-          </div>
+          <Landing>{!isDesktopView && children}</Landing>
+          <About />
+          <WhatIDo />
+          <Career />
+          <Work />
+          {isDesktopView && (
+            <Suspense fallback={<div>Loading....</div>}>
+              <TechStack />
+            </Suspense>
+          )}
+          <Licenses />
+          <Contact />
         </div>
       </div>
     </div>

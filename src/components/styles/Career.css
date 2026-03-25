@@ -8,8 +8,8 @@
   opacity: 1;
   height: auto;
   margin: auto;
-  margin-bottom: 250px;
-  padding: 120px 0px;
+  margin-bottom: 200px;
+  padding: 80px 0px;
 }
 
 .career-section h2 {
@@ -71,6 +71,16 @@
   letter-spacing: 0.8px;
   font-weight: 500;
   margin: 0;
+}
+
+.career-role-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.career-role-link:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--accentColor);
 }
 
 .career-info h5 {
