@@ -30,7 +30,7 @@ const setCharacter = (
               character = gltf.scene;
               await renderer.compileAsync(character, camera, scene);
               character.traverse((child) => {
-              if (child.isMesh) {
+                if (!(child instanceof THREE.Mesh)) return;
                 const mesh = child as THREE.Mesh;
 
                 // Change clothing colors to match site theme
@@ -49,8 +49,7 @@ const setCharacter = (
                   child.castShadow = true;
                   child.receiveShadow = true;
                   mesh.frustumCulled = true;
-                }
-              });
+                });
               resolve(gltf);
               setCharTimeline(character, camera);
               setAllTimeline();

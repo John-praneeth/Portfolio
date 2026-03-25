@@ -52,12 +52,13 @@ export function setCharTimeline(
         },
       })
     : null;
-  let screenLight: THREE.Object3D | null = null;
-  let monitor: THREE.Object3D | null = null;
+  let screenLight: THREE.Mesh | null = null;
+  let monitor: THREE.Mesh | null = null;
   character?.children.forEach((object) => {
     if (object.name === "Plane004") {
       object.children.forEach((child) => {
-        const material = (child as THREE.Mesh).material as
+        if (!(child instanceof THREE.Mesh)) return;
+        const material = child.material as
           | (THREE.Material & { transparent?: boolean; opacity?: number; name?: string; color?: { set: (value: string) => void } })
           | THREE.Material[];
 
@@ -76,14 +77,20 @@ export function setCharTimeline(
         }
       });
     }
-    if (object.name === "screenlight") {
-      object.material.transparent = true;
-      object.material.opacity = prefersReducedMotion ? 1 : 0;
-      object.material.emissive.set("#B0F5EA");
+    if (object.name === "screenlight" && object instanceof THREE.Mesh) {
+      const material = object.material as THREE.Material & {
+        transparent?: boolean;
+        opacity?: number;
+        emissive?: { set: (value: string) => void };
+      };
+
+      material.transparent = true;
+      material.opacity = prefersReducedMotion ? 1 : 0;
+      material.emissive?.set?.("#B0F5EA");
       if (!prefersReducedMotion) {
         gsap
           .timeline({ repeat: -1, repeatRefresh: true })
-          .to(object.material, {
+          .to(material, {
             emissiveIntensity: () => intensity * 8,
             duration: () => Math.random() * 0.6,
             delay: () => Math.random() * 0.1,
@@ -94,6 +101,8 @@ export function setCharTimeline(
   });
   const neckBone = character?.getObjectByName("spine005");
   if (window.innerWidth > 1024) {
+    const monitorTarget: any = monitor;
+    const screenLightTarget: any = screenLight;
     if (character && !prefersReducedMotion && tl1 && tl2 && tl3) {
       tl1
         .fromTo(character.rotation, { y: 0 }, { y: 0.7, duration: 1 }, 0)
@@ -119,8 +128,8 @@ export function setCharTimeline(
         )
         .to(character.rotation, { y: 0.92, x: 0.12, delay: 3, duration: 3 }, 0)
         .to(neckBone?.rotation || {}, { x: 0.6, delay: 2, duration: 3 }, 0)
-        .to(monitor?.material || {}, { opacity: 1, duration: 0.8, delay: 3.2 }, 0)
-        .to(screenLight?.material || {}, { opacity: 1, duration: 0.8, delay: 4.5 }, 0)
+        .to((monitorTarget && monitorTarget.material) || {}, { opacity: 1, duration: 0.8, delay: 3.2 }, 0)
+        .to((screenLightTarget && screenLightTarget.material) || {}, { opacity: 1, duration: 0.8, delay: 4.5 }, 0)
         .fromTo(
           ".what-box-in",
           { display: "none" },
@@ -128,7 +137,7 @@ export function setCharTimeline(
           0
         )
         .fromTo(
-          monitor?.position || {},
+          (monitorTarget && monitorTarget.position) || {},
           { y: -10, z: 2 },
           { y: 0, z: 0, delay: 1.5, duration: 3 },
           0
