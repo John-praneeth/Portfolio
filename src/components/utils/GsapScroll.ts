@@ -52,15 +52,27 @@ export function setCharTimeline(
         },
       })
     : null;
-  let screenLight: any, monitor: any;
-  character?.children.forEach((object: any) => {
+  let screenLight: THREE.Object3D | null = null;
+  let monitor: THREE.Object3D | null = null;
+  character?.children.forEach((object) => {
     if (object.name === "Plane004") {
-      object.children.forEach((child: any) => {
-        child.material.transparent = true;
-        child.material.opacity = 0;
-        if (child.material.name === "Material.018") {
-          monitor = child;
-          child.material.color.set("#FFFFFF");
+      object.children.forEach((child) => {
+        const material = (child as THREE.Mesh).material as
+          | (THREE.Material & { transparent?: boolean; opacity?: number; name?: string; color?: { set: (value: string) => void } })
+          | THREE.Material[];
+
+        if (Array.isArray(material)) {
+          material.forEach((mat) => {
+            mat.transparent = true;
+            mat.opacity = 0;
+          });
+        } else {
+          material.transparent = true;
+          material.opacity = 0;
+          if (material.name === "Material.018") {
+            monitor = child;
+            material.color?.set?.("#FFFFFF");
+          }
         }
       });
     }
@@ -80,7 +92,7 @@ export function setCharTimeline(
       screenLight = object;
     }
   });
-  let neckBone = character?.getObjectByName("spine005");
+  const neckBone = character?.getObjectByName("spine005");
   if (window.innerWidth > 1024) {
     if (character && !prefersReducedMotion && tl1 && tl2 && tl3) {
       tl1

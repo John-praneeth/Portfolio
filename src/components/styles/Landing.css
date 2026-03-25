@@ -262,6 +262,58 @@ h2.landing-info-h2 {
   left: 0;
 }
 
+/* Mobile-first refinements */
+@media screen and (max-width: 600px) {
+  .landing-section {
+    height: var(--vh);
+  }
+
+  .landing-intro {
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+  }
+
+  .landing-intro h2 {
+    font-size: 16px;
+    letter-spacing: 1.5px;
+  }
+
+  .landing-intro h1 {
+    font-size: 22px;
+    line-height: 24px;
+  }
+
+  .landing-info {
+    bottom: 24px;
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+  }
+
+  .landing-info h3 {
+    font-size: 16px;
+  }
+
+  .landing-info h2,
+  h2.landing-info-h2 {
+    font-size: 24px;
+    line-height: 28px;
+  }
+
+  .character-model {
+    height: 60vh;
+    bottom: 0;
+  }
+
+  .character-hover {
+    width: 220px;
+    height: 220px;
+  }
+}
+
 @media screen and (min-width: 500px) {
   .landing-circle2 {
     display: block;

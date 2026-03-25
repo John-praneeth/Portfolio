@@ -12,6 +12,7 @@
   top: 0;
   z-index: 9999;
 }
+
 .header ul {
   font-size: 12px;
   display: flex;
@@ -22,7 +23,8 @@
   column-gap: 20px;
   row-gap: 8px;
   align-items: end;
-  background: radial-gradient(circle at 0% 0%, rgba(148, 163, 184, 0.14), transparent 55%),
+  background:
+    radial-gradient(circle at 0% 0%, rgba(148, 163, 184, 0.14), transparent 55%),
     radial-gradient(circle at 100% 0%, rgba(94, 234, 212, 0.15), transparent 55%),
     linear-gradient(135deg, rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.7));
   border-radius: 999px;
@@ -31,13 +33,15 @@
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
 }
+
 .header ul li {
-  margin-left: 0px;
+  margin-left: 0;
   letter-spacing: 1px;
   color: #ccc;
   font-weight: 600;
   cursor: pointer;
 }
+
 .navbar-connect {
   position: absolute;
   display: none;
@@ -48,13 +52,15 @@
   letter-spacing: 1px;
   font-weight: 500;
 }
+
 .navbar-title {
   font-weight: 700;
   font-size: 14px;
   letter-spacing: 0.2px;
   padding: 6px 14px;
   border-radius: 999px;
-  background: radial-gradient(circle at 0% 0%, rgba(148, 163, 184, 0.16), transparent 55%),
+  background:
+    radial-gradient(circle at 0% 0%, rgba(148, 163, 184, 0.16), transparent 55%),
     radial-gradient(circle at 100% 0%, rgba(94, 234, 212, 0.18), transparent 55%),
     linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.78));
   border: 1px solid rgba(148, 163, 184, 0.45);
@@ -67,38 +73,160 @@
   justify-content: center;
   line-height: 1;
 }
+
+/* Base styles for mobile hamburger toggle (hidden by default) */
+.navbar-menu-toggle {
+  display: none;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(148, 163, 184, 0.14), transparent 55%),
+    radial-gradient(circle at 100% 0%, rgba(94, 234, 212, 0.16), transparent 55%),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.9));
+  color: #e5e7eb;
+  padding: 10px 18px;
+  min-width: 72px;
+  min-height: 44px;
+  cursor: pointer;
+  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.navbar-menu-icon {
+  font-size: 18px;
+}
+
+/* Left side drawer for mobile navigation */
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 72%;
+  max-width: 320px;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(148, 163, 184, 0.2), transparent 55%),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(5, 8, 16, 0.98));
+  box-shadow: 0 0 40px rgba(15, 23, 42, 0.95);
+  z-index: 9998;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.mobile-nav-open {
+  transform: translateX(0);
+}
+
+.mobile-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 88px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.mobile-nav li {
+  list-style: none;
+}
+
+.mobile-nav a,
+.mobile-resume-button {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #e5e7eb;
+  text-decoration: none;
+}
+
+.mobile-resume-button {
+  border: none;
+  padding: 10px 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mobile-nav-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.7);
+  border: none;
+  padding: 0;
+  margin: 0;
+  z-index: 9997;
+}
+
+/* Mobile layout: use hamburger + side menu, hide glass links and home icon */
+@media only screen and (max-width: 899px) {
+  .header {
+    padding: 8px 10px;
+    justify-content: flex-start;
+    column-gap: 12px;
+  }
+
+  .navbar-title {
+    display: none;
+  }
+
+  .header ul {
+    display: none;
+  }
+
+  .navbar-menu-toggle {
+    display: inline-flex;
+  }
+}
+
 @media only screen and (min-width: 500px) {
   .header {
     padding: 12px 22px;
   }
+
   .header ul {
     flex-direction: row;
     align-items: center;
     font-size: 14px;
   }
+
   .header ul li {
     color: #eae5ec;
   }
+
   .navbar-title {
     font-size: 16px;
   }
 }
+
 @media only screen and (min-width: 900px) {
   .navbar-connect {
     display: block;
   }
 }
+
 @media only screen and (min-width: 1200px) {
   .header {
     padding: 16px 26px;
   }
+
   .header ul {
     column-gap: 32px;
     font-size: 16px;
   }
+
   .navbar-connect {
     font-size: 16px;
   }
+
   .navbar-title {
     font-size: 18px;
   }

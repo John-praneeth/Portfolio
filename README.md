@@ -18,7 +18,7 @@ layout.
 
 > After you deploy, replace this placeholder with your live URL.
 
-**Live Site:** https://your-portfolio-url.com
+**Live Site:** https://www.johnpraneeth.tech
 
 ![Portfolio Preview](public/images/preview.png)
 
