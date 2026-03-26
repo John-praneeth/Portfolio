@@ -21,11 +21,12 @@ const Scene = () => {
     let mounted = true;
 
     if (canvasDiv.current) {
+      const canvasElement = canvasDiv.current;
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
 
-      const rect = canvasDiv.current.getBoundingClientRect();
+      const rect = canvasElement.getBoundingClientRect();
       const container = { width: rect.width, height: rect.height };
       const aspect = container.width / container.height;
       const scene = sceneRef.current;
@@ -43,7 +44,7 @@ const Scene = () => {
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, pixelRatioCap));
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1;
-      canvasDiv.current.appendChild(renderer.domElement);
+      canvasElement.appendChild(renderer.domElement);
 
       const camera = new THREE.PerspectiveCamera(14.5, aspect, 0.1, 1000);
       camera.position.z = 10;
@@ -92,16 +93,18 @@ const Scene = () => {
         handleMouseMove(event, (x, y) => (mouse = { x, y }));
       };
       let debounce: number | undefined;
-      const onTouchStart = (event: TouchEvent) => {
-        const element = event.target as HTMLElement;
+      const onTouchMoveEvent = (event: TouchEvent) => {
+        handleTouchMove(event, (x, y) => (mouse = { x, y }));
+      };
+
+      const onTouchStart = () => {
         debounce = setTimeout(() => {
-          element?.addEventListener("touchmove", (e: TouchEvent) =>
-            handleTouchMove(e, (x, y) => (mouse = { x, y }))
-          );
+          landingDiv?.addEventListener("touchmove", onTouchMoveEvent);
         }, 200);
       };
 
       const onTouchEnd = () => {
+        landingDiv?.removeEventListener("touchmove", onTouchMoveEvent);
         handleTouchEnd((x, y, interpolationX, interpolationY) => {
           mouse = { x, y };
           interpolation = { x: interpolationX, y: interpolationY };
@@ -154,13 +157,14 @@ const Scene = () => {
         renderer.dispose();
         window.removeEventListener("resize", onResize);
         document.removeEventListener("visibilitychange", onVisibilityChange);
-        if (canvasDiv.current) {
-          canvasDiv.current.removeChild(renderer.domElement);
+        if (canvasElement.contains(renderer.domElement)) {
+          canvasElement.removeChild(renderer.domElement);
         }
         document.removeEventListener("mousemove", onMouseMove);
         if (landingDiv) {
           landingDiv.removeEventListener("touchstart", onTouchStart);
           landingDiv.removeEventListener("touchend", onTouchEnd);
+          landingDiv.removeEventListener("touchmove", onTouchMoveEvent);
         }
       };
     }
@@ -173,14 +177,6 @@ const Scene = () => {
           isLoaded ? "character-loaded" : "character-loading"
         }`}
       >
-        {/* Instant static placeholder while the 3D model decrypts/loads */}
-        <div className="character-placeholder-wrapper">
-          <img
-            src="/images/preview.png"
-            alt="John Praneeth 3D avatar"
-            className="character-placeholder"
-          />
-        </div>
         <div className="character-model" ref={canvasDiv}>
           <div className="character-rim"></div>
           <div className="character-hover" ref={hoverDivRef}></div>

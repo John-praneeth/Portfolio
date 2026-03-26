@@ -13,6 +13,7 @@ const Landing = ({ children }: PropsWithChildren) => {
               <br />
               <span>DASARI</span>
             </h1>
+            <p className="landing-mobile-subtitle">A Web &amp; Developer · Engineer</p>
           </div>
           <div className="landing-info">
             <h3>A Web &amp;</h3>

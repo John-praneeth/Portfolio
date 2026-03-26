@@ -169,9 +169,13 @@
 /* Mobile layout: use hamburger + side menu, hide glass links and home icon */
 @media only screen and (max-width: 899px) {
   .header {
-    padding: 8px 10px;
+    width: 100%;
+    max-width: 100%;
+    left: 0;
+    transform: none;
+    padding: 10px 0 10px 0;
     justify-content: flex-start;
-    column-gap: 12px;
+    column-gap: 0;
   }
 
   .navbar-title {
@@ -184,6 +188,7 @@
 
   .navbar-menu-toggle {
     display: inline-flex;
+    margin-left: 0;
   }
 }
 
@@ -208,6 +213,14 @@
 }
 
 @media only screen and (min-width: 900px) {
+  .header {
+    width: 100%;
+    max-width: 100%;
+    left: 0;
+    transform: none;
+    justify-content: space-between;
+  }
+
   .navbar-connect {
     display: block;
   }
