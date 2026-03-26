@@ -220,6 +220,21 @@
   box-shadow: 0 0 8px rgba(94, 234, 212, 0.4);
 }
 
+@media (max-width: 600px) {
+  .work-section {
+    padding: 42px 0 32px;
+  }
+
+  .work-section h2 {
+    font-size: 40px;
+    margin-bottom: 28px;
+  }
+
+  .carousel-scroll-hint {
+    display: inline-flex;
+  }
+}
+
 @media (max-width: 900px) {
   .carousel-arrow {
     width: 40px;

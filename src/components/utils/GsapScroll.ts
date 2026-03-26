@@ -52,8 +52,8 @@ export function setCharTimeline(
         },
       })
     : null;
-  let screenLight: THREE.Mesh | null = null;
-  let monitor: THREE.Mesh | null = null;
+  let screenLightMesh: THREE.Mesh | null = null;
+  let monitorMesh: THREE.Mesh | null = null;
   character?.children.forEach((object) => {
     if (object.name === "Plane004") {
       object.children.forEach((child) => {
@@ -71,7 +71,7 @@ export function setCharTimeline(
           material.transparent = true;
           material.opacity = 0;
           if (material.name === "Material.018") {
-            monitor = child;
+            monitorMesh = child;
             material.color?.set?.("#FFFFFF");
           }
         }
@@ -96,13 +96,25 @@ export function setCharTimeline(
             delay: () => Math.random() * 0.1,
           });
       }
-      screenLight = object;
+      screenLightMesh = object;
     }
   });
   const neckBone = character?.getObjectByName("spine005");
   if (window.innerWidth > 1024) {
-    const monitorTarget: any = monitor;
-    const screenLightTarget: any = screenLight;
+    const monitorNode = monitorMesh as unknown as
+      | { material?: THREE.Material; position?: THREE.Vector3 }
+      | null;
+    const screenLightNode = screenLightMesh as unknown as
+      | { material?: THREE.Material }
+      | null;
+
+    const monitorMaterial = monitorNode?.material as
+      | (THREE.Material & { opacity?: number })
+      | undefined;
+    const screenLightMaterial = screenLightNode?.material as
+      | (THREE.Material & { opacity?: number })
+      | undefined;
+    const monitorPosition = monitorNode?.position;
     if (character && !prefersReducedMotion && tl1 && tl2 && tl3) {
       tl1
         .fromTo(character.rotation, { y: 0 }, { y: 0.7, duration: 1 }, 0)
@@ -128,8 +140,12 @@ export function setCharTimeline(
         )
         .to(character.rotation, { y: 0.92, x: 0.12, delay: 3, duration: 3 }, 0)
         .to(neckBone?.rotation || {}, { x: 0.6, delay: 2, duration: 3 }, 0)
-        .to((monitorTarget && monitorTarget.material) || {}, { opacity: 1, duration: 0.8, delay: 3.2 }, 0)
-        .to((screenLightTarget && screenLightTarget.material) || {}, { opacity: 1, duration: 0.8, delay: 4.5 }, 0)
+        .to(monitorMaterial || {}, { opacity: 1, duration: 0.8, delay: 3.2 }, 0)
+        .to(
+          screenLightMaterial || {},
+          { opacity: 1, duration: 0.8, delay: 4.5 },
+          0
+        )
         .fromTo(
           ".what-box-in",
           { display: "none" },
@@ -137,7 +153,7 @@ export function setCharTimeline(
           0
         )
         .fromTo(
-          (monitorTarget && monitorTarget.position) || {},
+          monitorPosition || {},
           { y: -10, z: 2 },
           { y: 0, z: 0, delay: 1.5, duration: 3 },
           0

@@ -25,7 +25,9 @@ const Navbar = () => {
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    const lenisOptions: any = {
+    const lenisOptions: ConstructorParameters<typeof Lenis>[0] & {
+      autoRaf?: boolean;
+    } = {
       // shorter duration = less "drag" feeling
       duration: prefersReducedMotion ? 0.06 : 0.09,
       smoothWheel: !prefersReducedMotion,
@@ -82,8 +84,7 @@ const Navbar = () => {
       });
       cancelAnimationFrame(frameId);
       // Lenis has an optional destroy method; guard in case of version differences.
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (lenis as any).destroy?.();
+      (lenis as Lenis & { destroy?: () => void }).destroy?.();
     };
   }, []);
   return (
@@ -104,7 +105,6 @@ const Navbar = () => {
           onClick={() => setIsMobileNavOpen((open) => !open)}
         >
           <FiMenu className="navbar-menu-icon" />
-          <span className="navbar-menu-label">Menu</span>
         </button>
         <a
           href="mailto:johnpraneeth3030@gmail.com"
