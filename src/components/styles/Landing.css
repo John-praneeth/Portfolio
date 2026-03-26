@@ -320,7 +320,7 @@ h2.landing-info-h2 {
   }
 
   .landing-intro {
-    top: 3%;
+    top: 5%;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
@@ -346,8 +346,8 @@ h2.landing-info-h2 {
   }
 
   .character-model {
-    height: 60vh;
-    bottom: 0;
+    height: 64vh;
+    bottom: 20px;
   }
 
   .character-hover {
