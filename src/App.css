@@ -10,10 +10,11 @@
 .title,
 .para {
   font-kerning: none;
-  -webkit-text-rendering: optimizeSpeed;
-  text-rendering: optimizeSpeed;
+  -webkit-text-rendering: optimizeLegibility;
+  text-rendering: optimizeLegibility;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
+  color: #ffffff; /* Explicit high-contrast white */
 }
 
 @media only screen and (max-width: 1600px) {
