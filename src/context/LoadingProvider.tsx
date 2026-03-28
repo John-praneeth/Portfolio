@@ -3,17 +3,21 @@ import { LoadingContext } from "./loadingContext";
 
 export const LoadingProvider = ({ children }: PropsWithChildren) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  
   const value = useMemo(
     () => ({
       isLoading,
       setIsLoading,
+      progress,
+      setProgress,
     }),
-    [isLoading]
+    [isLoading, progress]
   );
 
   return (
     <LoadingContext.Provider value={value}>
-      <main className="main-body">{children}</main>
+      <main className="main-active">{children}</main>
     </LoadingContext.Provider>
   );
 };

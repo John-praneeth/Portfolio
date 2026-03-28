@@ -6,7 +6,8 @@ import { decryptFile } from "./decrypt";
 const setCharacter = (
   renderer: THREE.WebGLRenderer,
   scene: THREE.Scene,
-  camera: THREE.PerspectiveCamera
+  camera: THREE.PerspectiveCamera,
+  onProgress?: (progress: number) => void
 ) => {
   // Mark renderer and scene as used so TypeScript doesn't flag them,
   // even though we currently don't need them after removing compileAsync.
@@ -24,7 +25,8 @@ const setCharacter = (
         try {
           const encryptedBlob = await decryptFile(
             "/models/character.enc?v=2",
-            "MyCharacter12"
+            "MyCharacter12",
+            onProgress
           );
           const blobUrl = URL.createObjectURL(new Blob([encryptedBlob]));
 

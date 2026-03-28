@@ -233,6 +233,7 @@
   text-transform: uppercase;
   background: linear-gradient(90deg, #e5e7eb, #22d3ee);
   -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
   text-shadow: 0 0 24px rgba(34, 211, 238, 0.35);
 }
@@ -388,6 +389,29 @@ h2.landing-info-h2 {
   }
 }
 
+@media screen and (min-width: 601px) and (max-width: 1024px) {
+  /* Tablet: hide the complex layered text, show simplified subtitle instead */
+  .landing-info {
+    display: none;
+  }
+
+  .landing-mobile-subtitle {
+    display: block;
+  }
+
+  .landing-intro {
+    top: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+  }
+
+  .character-model {
+    height: 72vh;
+    bottom: 10px;
+  }
+}
+
 @media screen and (min-width: 768px) {
   .character-model {
     height: 80vh;
@@ -422,6 +446,10 @@ h2.landing-info-h2 {
     bottom: 0;
     z-index: 11;
     position: fixed;
+    /* Constrain the 3D canvas to a max width so it stays centered on wide screens */
+    max-width: 1400px;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .character-model::after,
@@ -467,6 +495,10 @@ h2.landing-info-h2 {
 }
 
 @media screen and (min-width: 1600px) {
+  .character-model {
+    max-width: 1600px;
+  }
+
   .landing-intro h2 {
     font-size: 35px;
   }

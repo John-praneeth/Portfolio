@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HoverLinks from "./HoverLinks";
 import { gsap } from "gsap";
@@ -12,6 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 const Navbar = () => {
   const [showResume, setShowResume] = useState(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const progressBarRef = useRef<HTMLDivElement>(null);
 
   const handleResumeOpen = (
     e?: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>
@@ -77,6 +78,19 @@ const Navbar = () => {
       element.addEventListener("click", clickHandler);
     });
 
+    if (progressBarRef.current) {
+      gsap.to(progressBarRef.current, {
+        scaleX: 1,
+        ease: "none",
+        scrollTrigger: {
+          trigger: document.body,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.3,
+        },
+      });
+    }
+
     return () => {
       links.forEach((elem) => {
         const element = elem as HTMLAnchorElement;
@@ -89,6 +103,7 @@ const Navbar = () => {
   }, []);
   return (
     <>
+      <div className="scroll-progress-bar" ref={progressBarRef}></div>
       <div className="header">
         <a
           href="/#"

@@ -8,7 +8,6 @@ const MainContainer = lazy(() => import("./components/MainContainer"));
 const CharacterModel = lazy(() => import("./components/Character"));
 
 const App = () => {
-
   return (
     <>
       <LoadingProvider>

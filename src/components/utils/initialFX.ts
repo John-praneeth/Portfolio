@@ -46,7 +46,8 @@ export function initialFX() {
   ).matches;
 
   document.body.style.overflowY = "auto";
-  document.getElementsByTagName("main")[0].classList.add("main-active");
+  const main = document.getElementsByTagName("main")[0];
+  main?.classList.add("main-active");
   gsap.to("body", {
     backgroundColor: "#0a0e17",
     duration: 0.5,

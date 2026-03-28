@@ -3,6 +3,8 @@ import { createContext, useContext } from "react";
 interface LoadingType {
   isLoading: boolean;
   setIsLoading: (state: boolean) => void;
+  progress: number;
+  setProgress: (progress: number) => void;
 }
 
 export const LoadingContext = createContext<LoadingType | null>(null);

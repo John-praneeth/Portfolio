@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import gsap from "gsap";
 import "./styles/WhatIDo.css";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -22,7 +23,23 @@ const WhatIDo = () => {
       });
     }
 
+    const skillsOrbit = gsap.context(() => {
+      gsap.to(".orbit-wrapper", {
+        rotation: 360,
+        duration: 30,
+        repeat: -1,
+        ease: "none",
+      });
+      gsap.to(".orbit-skill-inner", {
+        rotation: -360,
+        duration: 30,
+        repeat: -1,
+        ease: "none",
+      });
+    });
+
     return () => {
+      skillsOrbit.revert();
       handlers.forEach((handler, container) => {
         container.removeEventListener("click", handler);
       });
@@ -32,9 +49,32 @@ const WhatIDo = () => {
     <div className="whatIDO">
       <div className="what-box">
         <div className="what-heading">
-          <h2 className="what-heading-title">
-            WHAT I DO
-          </h2>
+          <h2 className="what-heading-title">WHAT I DO</h2>
+          <div className="skills-orbit">
+            {[
+              "React", "Node.js", "Python", "MongoDB", 
+              "PostgreSQL", "Next.js", "Docker", "AWS"
+            ].map((skill, index, arr) => {
+              const angle = (index / arr.length) * 360;
+              const radius = index % 2 === 0 ? 150 : 210;
+              return (
+                <div
+                  key={index}
+                  className="orbit-wrapper"
+                  style={{ transform: `rotate(${angle}deg)` }}
+                >
+                  <div
+                    className="orbit-skill"
+                    style={{ transform: `translateX(${radius}px)` }}
+                  >
+                    <div className="orbit-skill-inner">
+                      {skill}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
       <div className="what-box">
