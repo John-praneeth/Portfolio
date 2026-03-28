@@ -74,10 +74,7 @@ body {
   overflow-y: auto;
 }
 
-.main-body {
-  max-width: 100%;
-  overflow-x: hidden;
-}
+
 
 .container-main {
   width: 100%;

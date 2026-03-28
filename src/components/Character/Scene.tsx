@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import setCharacter from "./utils/character";
 import setLighting from "./utils/lighting";
-import handleResize from "./utils/resizeUtils";
+import handleResize, { getResponsiveZoom } from "./utils/resizeUtils";
 import {
   handleMouseMove,
   handleTouchEnd,
@@ -31,12 +31,27 @@ const Scene = () => {
       const aspect = container.width / container.height;
       const scene = sceneRef.current;
 
-      const renderer = new THREE.WebGLRenderer({
-        alpha: true,
-        // turn off expensive MSAA, rely on post AA from the display
-        antialias: false,
-        powerPreference: "high-performance",
-      });
+      // Some environments (notably headless / software rendering) may not be able
+      // to create a WebGL context. Avoid throwing and breaking the whole app.
+      const webglProbe = document.createElement("canvas");
+      const webglContext =
+        webglProbe.getContext("webgl") ||
+        webglProbe.getContext("experimental-webgl");
+      if (!webglContext) {
+        return;
+      }
+
+      let renderer: THREE.WebGLRenderer;
+      try {
+        renderer = new THREE.WebGLRenderer({
+          alpha: true,
+          // turn off expensive MSAA, rely on post AA from the display
+          antialias: false,
+          powerPreference: "high-performance",
+        });
+      } catch {
+        return;
+      }
       renderer.setSize(container.width, container.height);
       // cap pixel ratio to avoid overworking the GPU on high-DPI screens;
       // use a lower cap on small screens to improve performance.
@@ -44,12 +59,17 @@ const Scene = () => {
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, pixelRatioCap));
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1;
-      canvasElement.appendChild(renderer.domElement);
+      try {
+        canvasElement.appendChild(renderer.domElement);
+      } catch {
+        renderer.dispose();
+        return;
+      }
 
       const camera = new THREE.PerspectiveCamera(14.5, aspect, 0.1, 1000);
       camera.position.z = 10;
       camera.position.set(0, 13.1, 24.7);
-      camera.zoom = 1.1;
+      camera.zoom = getResponsiveZoom(aspect);
       camera.updateProjectionMatrix();
 
       let headBone: THREE.Object3D | null = null;
@@ -98,7 +118,7 @@ const Scene = () => {
       };
 
       const onTouchStart = () => {
-        debounce = setTimeout(() => {
+        debounce = window.setTimeout(() => {
           landingDiv?.addEventListener("touchmove", onTouchMoveEvent);
         }, 200);
       };

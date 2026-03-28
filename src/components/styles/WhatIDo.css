@@ -23,6 +23,51 @@
   position: relative;
   margin-right: 10%;
   margin-bottom: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.skills-orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  z-index: -2;
+  pointer-events: none;
+}
+
+.orbit-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+.orbit-skill {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.orbit-skill-inner {
+  position: absolute;
+  top: -15px; /* Center vertical */
+  left: -40px; /* Center horizontal */
+  padding: 6px 14px;
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(94, 234, 212, 0.3);
+  color: #5eead4;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  /* The counter-rotation is handled by GSAP in WhatIDo.tsx */
 }
 
 .what-heading::before {
